@@ -1,5 +1,8 @@
 # importing required modules
 import PyPDF2
+from scoring import get_scoring_data
+from constants import ROLE_TYPES
+
 
 # creating a pdf file object
 pdfFileObj = open('example.pdf', 'rb')
@@ -8,12 +11,19 @@ pdfFileObj = open('example.pdf', 'rb')
 pdfReader = PyPDF2.PdfReader(pdfFileObj)
 
 # printing number of pages in pdf file
-print(len(pdfReader.pages))
+page_count = len(pdfReader.pages)
 
-# creating a page object
-for page in pdfReader.pages:
-    # extracting text from page
-    print(page.extract_text())
+# Get scoring data
+score_one = get_scoring_data(ROLE_TYPES[0])
+score_two = get_scoring_data(ROLE_TYPES[0])
+page_score = {}
+
+# extracting text from page
+index = 0
+while index < 10:
+    page_data = pdfReader.pages[index]
+    print(page_data.extract_text().strip().lower())
+    index += 1
 
 # closing the pdf file object
 pdfFileObj.close()
