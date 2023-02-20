@@ -28,3 +28,16 @@ PROFILE_BE_SCORE_MAP = {
     "AWS": 10,
     "PCF": 10
 }
+
+ADDITIONAL_SKILLS_SCORE_MAP = {
+    "Git": 2,
+    "Gitlab": 2,
+    "Teamcity": 2,
+    "Artefactory": 2,
+    "terraform": 2,
+    "Splunk": 2,
+    "DXAPM": 2,
+    "ServiceNow": 2,
+    "Jira": 2,
+    "confluence": 2
+}

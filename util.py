@@ -1,19 +1,20 @@
 from PyPDF2 import PdfReader
+from cleantext import clean
 
 from constants import *
 
 
 def get_scoring_data(role: str) -> dict:
     if role == ROLE_TYPE__FE:
-        return PROFILE_FE_SCORE_MAP
+        return {**PROFILE_FE_SCORE_MAP, **ADDITIONAL_SKILLS_SCORE_MAP}
     elif role == ROLE_TYPE__PYTHON_BE:
-        return PROFILE_BE_SCORE_MAP
+        return {**PROFILE_BE_SCORE_MAP, **ADDITIONAL_SKILLS_SCORE_MAP}
     else:
         print('Please choose a valid role!')
 
 
 def refined_text(text: str) -> str:
-    return text.strip().lower()
+    return clean(text.lower())
 
 
 def score_text(text: str, score_map_fe: dict) -> int:
@@ -23,6 +24,11 @@ def score_text(text: str, score_map_fe: dict) -> int:
             agg_score += value
 
     return agg_score
+
+
+def sort_scores(d: dict, top: int) -> list:
+    sorted_dict = dict(sorted(d.items(), key=lambda x: x[1], reverse=True))
+    return list(sorted_dict.items())[:top]
 
 
 def get_candidates_from_text(reader: PdfReader, end: int, raw_text='') -> list:

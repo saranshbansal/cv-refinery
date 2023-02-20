@@ -1,7 +1,7 @@
 import PyPDF2
 from PyPDF2 import PdfReader
 
-from util import get_scoring_data, score_text, refined_text
+from util import get_scoring_data, score_text, refined_text, sort_scores
 from constants import ROLE_TYPE__FE, ROLE_TYPE__PYTHON_BE
 
 # creating a pdf file object
@@ -23,8 +23,8 @@ end = len(pdfReader.pages)
 # score each page by given score map
 while start < end:
     text = refined_text(pdfReader.pages[start].extract_text())
-    page_scores_fe[start] = score_text(text, score_map_fe)
-    page_scores_be[start] = score_text(text, score_map_be)
+    page_scores_fe["Page {}".format(start)] = score_text(text, score_map_fe)
+    page_scores_be["Page {}".format(start)] = score_text(text, score_map_be)
     start += 1
 
 # candidates = get_candidates_from_text(pdfReader, 2)
@@ -38,8 +38,11 @@ while start < end:
 #             else:
 #                 cv_page_map[candidate] = page_txt
 
-print(page_scores_be)
-print("----")
-print(page_scores_fe)
+# Results
+print('Top 5 scoring resumes (FE): ')
+print(sort_scores(page_scores_fe, 5))
+print('Top 5 scoring resumes (BE): ')
+print(sort_scores(page_scores_be, 5))
+
 # closing the pdf file object
 pdfFileObj.close()
