@@ -1,29 +1,45 @@
-# importing required modules
 import PyPDF2
-from scoring import get_scoring_data
-from constants import ROLE_TYPES
+from PyPDF2 import PdfReader
 
+from util import get_scoring_data, score_text, refined_text
+from constants import ROLE_TYPE__FE, ROLE_TYPE__PYTHON_BE
 
 # creating a pdf file object
 pdfFileObj = open('example.pdf', 'rb')
 
 # creating a pdf reader object
-pdfReader = PyPDF2.PdfReader(pdfFileObj)
+pdfReader: PdfReader = PyPDF2.PdfReader(pdfFileObj)
 
-# printing number of pages in pdf file
-page_count = len(pdfReader.pages)
+# get scoring metadata
+score_map_fe = get_scoring_data(ROLE_TYPE__FE)
+score_map_be = get_scoring_data(ROLE_TYPE__PYTHON_BE)
+page_scores_fe = dict()
+page_scores_be = dict()
 
-# Get scoring data
-score_one = get_scoring_data(ROLE_TYPES[0])
-score_two = get_scoring_data(ROLE_TYPES[0])
-page_score = {}
+# read CVs page by pages (skip first 2 pages)
+start = 2
+end = len(pdfReader.pages)
 
-# extracting text from page
-index = 0
-while index < 10:
-    page_data = pdfReader.pages[index]
-    print(page_data.extract_text().strip().lower())
-    index += 1
+# score each page by given score map
+while start < end:
+    text = refined_text(pdfReader.pages[start].extract_text())
+    page_scores_fe[start] = score_text(text, score_map_fe)
+    page_scores_be[start] = score_text(text, score_map_be)
+    start += 1
 
+# candidates = get_candidates_from_text(pdfReader, 2)
+# cv_page_map = dict()
+# for page in pdfReader.pages:
+#     page_txt = page.extract_text().strip().lower()
+#     for candidate in candidates:
+#         if candidate in page_txt:
+#             if candidate in cv_page_map:
+#                 cv_page_map[candidate] += page_txt
+#             else:
+#                 cv_page_map[candidate] = page_txt
+
+print(page_scores_be)
+print("----")
+print(page_scores_fe)
 # closing the pdf file object
 pdfFileObj.close()
