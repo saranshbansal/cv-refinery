@@ -34,7 +34,7 @@ ADDITIONAL_SKILLS_SCORE_MAP = {
     "Gitlab": 2,
     "Teamcity": 2,
     "Artefactory": 2,
-    "terraform": 2,
+    "Terraform": 2,
     "Splunk": 2,
     "DXAPM": 2,
     "ServiceNow": 2,

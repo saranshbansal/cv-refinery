@@ -1,14 +1,13 @@
-import PyPDF2
 from PyPDF2 import PdfReader
 
-from util import get_scoring_data, score_text, refined_text, sort_scores
 from constants import ROLE_TYPE__FE, ROLE_TYPE__PYTHON_BE
+from util import get_scoring_data, score_text, refined_text, sort_scores
 
 # creating a pdf file object
 pdfFileObj = open('example.pdf', 'rb')
 
 # creating a pdf reader object
-pdfReader: PdfReader = PyPDF2.PdfReader(pdfFileObj)
+pdfReader: PdfReader = PdfReader(pdfFileObj)
 
 # get scoring metadata
 score_map_fe = get_scoring_data(ROLE_TYPE__FE)
